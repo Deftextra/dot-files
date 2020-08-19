@@ -1,1 +1,7 @@
-/home/radwan/.gitconfig
+[user]
+	name = Radwan Suufi
+	email = rd.90@hotmail.com
+[core]
+	editor = vim
+[credential]
+	helper = cache
