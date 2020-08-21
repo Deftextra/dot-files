@@ -2,10 +2,6 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
-#Support of X-server clipboard sharing in WSL2
-# See https://github.com/microsoft/WSL/issues/4106 for more info
-export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0
-
 # If not running interactively, don't do anything
 case $- in
     *i*) ;;
@@ -123,9 +119,6 @@ if ! shopt -oq posix; then
   fi
 fi
 
-
-
-
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 export FZF_DEFAULT_OPTS="--extended"
 # added by travis gem
@@ -135,5 +128,7 @@ export FZF_DEFAULT_OPTS="--extended"
 LS_COLORS='ow=01;36;40'
 export LS_COLORS
 
-
+#Support of X-server clipboard sharing in WSL2
+# See https://github.com/microsoft/WSL/issues/4106 for more info
+export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0
 
