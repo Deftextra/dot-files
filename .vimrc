@@ -5,26 +5,30 @@
 
 call plug#begin('~/.vim/plugged')
 "------- All accidently deleted plugins --------------
-"NERDTree
-"YouCompleteMe
-"auto-pairs
-"fzf.vim
-"goyo.vim
-"indentLine
-"markdown-preview.nvim
-"nerdcommenter
-"rainbow
-"tmuxline.vim
-"vim-airline
-"vim-airline-themes
-"vim-fugitive
-"vim-gitgutter
-"vim-repeat
-"vim-surround
-"vim-tmux-navigator
-"vimux
-"vimwiki
+
+" NERDTree
+" YouCompleteMe
+" auto-pairs
+" fzf.vim
+" goyo.vim
+" indentLine
+" markdown-preview.nvim
+" nerdcommenter
+" rainbow
+" tmuxline.vim
+" vim-airline
+" vim-airline-themes
+" vim-fugitive
+" vim-gitgutter
+" vim-repeat
+" vim-surround
+" vim-tmux-navigator
+"  vimux
+
 " ---------------------------------------
+
+" Automatically set 'shiftwidth' + 'expandtab' (indention) based on file type.
+Plug 'tpope/vim-sleuth'
 
 " Integrate fzf with Vim.
 Plug '~/.fzf'
@@ -35,6 +39,15 @@ Plug 'christoomey/vim-tmux-navigator'
 
 " Pass focus events from tmux to Vim (useful for autoread and linting tools).
 Plug 'tmux-plugins/vim-tmux-focus-events'
+
+" Show matching parenthesis in different color for better reading.
+Plug 'luochen1990/rainbow'
+
+" Automatically clear search highlights after you move your cursor.
+Plug 'haya14busa/is.vim'
+
+" Toggle comments in various ways.
+Plug 'tpope/vim-commentary'
 
 call plug#end()
 
@@ -56,6 +69,25 @@ syntax on
 " Set color scheme.
 set background=dark
 colorscheme monokai
+
+" -----------------------------------------------------------------------------
+" Status line
+" -----------------------------------------------------------------------------
+
+" Heavily inspired by: https://github.com/junegunn/dotfiles/blob/master/vimrc
+function! s:statusline_expr()
+  let mod = "%{&modified ? '[+] ' : !&modifiable ? '[x] ' : ''}"
+  let ro  = "%{&readonly ? '[RO] ' : ''}"
+  let ft  = "%{len(&filetype) ? '['.&filetype.'] ' : ''}"
+  let fug = "%{exists('g:loaded_fugitive') ? fugitive#statusline() : ''}"
+  let sep = ' %= '
+  let pos = ' %-12(%l : %c%V%) '
+  let pct = ' %P'
+
+  return '[%n] %f %<'.mod.ro.ft.fug.sep.pos.'%*'.pct
+endfunction
+
+let &statusline = s:statusline_expr()
 
 " -----------------------------------------------------------------------------
 " Basic settings
@@ -88,7 +120,37 @@ set incsearch
 set laststatus=2
 set matchpairs+=<:> " Use % to jump between pairs
 set mmp=5000
-        
+set modelines=2
+set mouse=a
+set nocompatible
+set noerrorbells visualbell t_vb=
+set noshiftround
+set nospell
+set nostartofline
+set number relativenumber
+set regexpengine=1
+set scrolloff=3
+set shiftwidth=4
+set showcmd
+set showmatch
+set shortmess+=c
+set showmode
+set smartcase       
+set softtabstop=2
+set splitbelow
+set splitright
+set tabstop=4
+set textwidth=0
+set ttimeout
+set ttyfast
+set ttymouse=sgr
+set undodir=/tmp
+set undofile
+set virtualedit=block
+set wildmenu
+set wildmode=full
+set wrap
+
 " -----------------------------------------------------------------------------
 " Basic mappings
 " -----------------------------------------------------------------------------
@@ -100,7 +162,6 @@ noremap <Down> gj
 noremap <Up> gk
 inoremap <Down> <C-o>gj
 inoremap <Up> <C-o>gk
-
 
 " Write and quit buffer
 nnoremap <leader>s :w<CR>
@@ -137,6 +198,7 @@ nnoremap <S-L> :tabnext<CR>
 " .............................................................................
 " junegunn/fzf.vim
 " .............................................................................
+
 let $FZF_DEFAULT_OPTS = '--bind ctrl-a:select-all'
 
 " Customize fzf colors to match your color scheme.
@@ -161,4 +223,18 @@ let g:fzf_action = {
   \ 'ctrl-y': {lines -> setreg('*', join(lines, "\n"))}}
 
 " Launch fzf with CTRL+P.
-nnoremap <silent> <C-p> :FZF -m<CR>
+if isdirectory(".git")
+    nnoremap <silent>  <C-p> :GFiles<CR>
+else
+    nnoremap <silent> <C-p> :FZF -m<CR>
+endif
+
+" .............................................................................
+" luochen1990/rainbow
+" .............................................................................
+
+" By default is active
+ let g:rainbow_active = 1
+
+" Toggle on and off
+nnoremap <leader>rt :RainbowToggle<CR>
