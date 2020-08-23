@@ -24,11 +24,14 @@ call plug#begin('~/.vim/plugged')
 " vim-surround
 " vim-tmux-navigator
 "  vimux
-
 " ---------------------------------------
 
-" Automatically set 'shiftwidth' + 'expandtab' (indention) based on file type.
-Plug 'tpope/vim-sleuth'
+"------- Review plugins --------------
+" lambdalisue/fern.vim - Alternative to NERDTree
+"-------------------------------------
+
+" vcode material theme,
+Plug 'chuling/equinusocio-material.vim'
 
 " Integrate fzf with Vim.
 Plug '~/.fzf'
@@ -46,11 +49,25 @@ Plug 'luochen1990/rainbow'
 " Automatically clear search highlights after you move your cursor.
 Plug 'haya14busa/is.vim'
 
+" Automatically set 'shiftwidth' + 'expandtab' (indention) based on file type.
+Plug 'tpope/vim-sleuth'
+
 " Toggle comments in various ways.
 Plug 'tpope/vim-commentary'
 
-call plug#end()
+" Easily surround text with required characters
+Plug 'tpope/vim-surround'
 
+" Automatically show Vim's complete menu while typing.
+Plug 'vim-scripts/AutoComplPop'
+
+" Highlight which character to jump to when using horizontal movement keys.
+Plug 'unblevable/quick-scope'
+
+" Code language, syntax, filetype and autocompletion 
+Plug  'ycm-core/YouCompleteMe'
+
+call plug#end()
 " -----------------------------------------------------------------------------
 " Color settings
 " -----------------------------------------------------------------------------
@@ -67,8 +84,9 @@ endif
 syntax on
 
 " Set color scheme.
-set background=dark
-colorscheme monokai
+let g:equinusocio_material_style = 'darker'
+colorscheme equinusocio_material
+
 
 " -----------------------------------------------------------------------------
 " Status line
@@ -93,6 +111,7 @@ let &statusline = s:statusline_expr()
 " Basic settings
 "   Research any of these by running :help <setting>
 " -----------------------------------------------------------------------------
+
 
 let mapleader = ","
 let maplocalleader = "\\"
@@ -151,6 +170,7 @@ set wildmenu
 set wildmode=full
 set wrap
 
+
 " -----------------------------------------------------------------------------
 " Basic mappings
 " -----------------------------------------------------------------------------
@@ -183,17 +203,43 @@ noremap <leader><Space> :let @/=''<CR>
 nnoremap <S-h> :tabprevious<CR>
 nnoremap <S-L> :tabnext<CR>
 
+" Navigate the complete menu items like CTRL+n / CTRL+p would.
+inoremap <expr> <C-j> pumvisible() ? "<C-n>" :"<C-j>"
+inoremap <expr> <C-k> pumvisible() ? "<C-p>" : "<C-k>"
+
+" Select the complete menu item like CTRL+y would.
+inoremap <expr> <C-l> pumvisible() ? "<C-y>" : "<C-l>"
+inoremap <expr> <CR> pumvisible() ? "<C-y>" :"<CR>"
+
+
+" Cancel the complete menu item like CTRL+e would.
+inoremap <expr> <down> pumvisible() ? "<C-e>" : "<down>
 
 " -----------------------------------------------------------------------------
 " Basic autocommands
 " -----------------------------------------------------------------------------
-
 " Set cursorline when in insert mode.
-:autocmd InsertEnter,InsertLeave * set cul!
+autocmd InsertEnter,InsertLeave * set cul!
+
+" Update a buffer's contents on focus if it changed outside of Vim.
+au FocusGained,BufEnter * :checktime
+
 
 " -----------------------------------------------------------------------------
 " Plugin settings, mappings and autocommands
 " -----------------------------------------------------------------------------
+
+" .............................................................................
+" unblevable/quick-scope
+" .............................................................................
+" Trigger a highlight in the appropriate direction when pressing these keys:
+
+" Un Comment if you want to Trigger highlighting only on key press.
+" let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
+
+" Only underline the highlights instead of using custom colors.
+highlight QuickScopePrimary gui=underline cterm=underline
+highlight QuickScopeSecondary gui=underline cterm=underline
 
 " .............................................................................
 " junegunn/fzf.vim
@@ -230,6 +276,11 @@ else
 endif
 
 " .............................................................................
+" ycm-core/YouCompleteMe
+" .............................................................................
+
+let g:ycm_global_ycm_extra_conf = '~/.vim/plugged/YouCompleteMe/.ycm_extra_conf.py'
+" .............................................................................
 " luochen1990/rainbow
 " .............................................................................
 
@@ -238,3 +289,4 @@ endif
 
 " Toggle on and off
 nnoremap <leader>rt :RainbowToggle<CR>
+
