@@ -30,8 +30,11 @@ call plug#begin('~/.vim/plugged')
 " lambdalisue/fern.vim - Alternative to NERDTree
 "-------------------------------------
 
-" vcode material theme,
+" Colors and themes
 Plug 'chuling/equinusocio-material.vim'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'edkolev/tmuxline.vim'
 
 " Integrate fzf with Vim.
 Plug '~/.fzf'
@@ -93,25 +96,24 @@ colorscheme equinusocio_material
 " -----------------------------------------------------------------------------
 
 " Heavily inspired by: https://github.com/junegunn/dotfiles/blob/master/vimrc
-function! s:statusline_expr()
-  let mod = "%{&modified ? '[+] ' : !&modifiable ? '[x] ' : ''}"
-  let ro  = "%{&readonly ? '[RO] ' : ''}"
-  let ft  = "%{len(&filetype) ? '['.&filetype.'] ' : ''}"
-  let fug = "%{exists('g:loaded_fugitive') ? fugitive#statusline() : ''}"
-  let sep = ' %= '
-  let pos = ' %-12(%l : %c%V%) '
-  let pct = ' %P'
+" function! s:statusline_expr()
+"   let mod = "%{&modified ? '[+] ' : !&modifiable ? '[x] ' : ''}"
+"   let ro  = "%{&readonly ? '[RO] ' : ''}"
+"   let ft  = "%{len(&filetype) ? '['.&filetype.'] ' : ''}"
+"   let fug = "%{exists('g:loaded_fugitive') ? fugitive#statusline() : ''}"
+"   let sep = ' %= '
+"   let pos = ' %-12(%l : %c%V%) '
+"   let pct = ' %P'
 
-  return '[%n] %f %<'.mod.ro.ft.fug.sep.pos.'%*'.pct
-endfunction
+"   return '[%n] %f %<'.mod.ro.ft.fug.sep.pos.'%*'.pct
+" endfunction
 
-let &statusline = s:statusline_expr()
+" let &statusline = s:statusline_expr()
 
 " -----------------------------------------------------------------------------
 " Basic settings
 "   Research any of these by running :help <setting>
 " -----------------------------------------------------------------------------
-
 
 let mapleader = ","
 let maplocalleader = "\\"
@@ -290,3 +292,7 @@ let g:ycm_global_ycm_extra_conf = '~/.vim/plugged/YouCompleteMe/.ycm_extra_conf.
 " Toggle on and off
 nnoremap <leader>rt :RainbowToggle<CR>
 
+" .............................................................................
+" vim-airline/vim-airline 
+" .............................................................................
+let g:airline_theme = 'equinusocio_material'
