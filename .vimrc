@@ -172,7 +172,6 @@ set wildmenu
 set wildmode=full
 set wrap
 
-
 " -----------------------------------------------------------------------------
 " Basic mappings
 " -----------------------------------------------------------------------------
@@ -213,9 +212,13 @@ inoremap <expr> <C-k> pumvisible() ? "<C-p>" : "<C-k>"
 inoremap <expr> <C-l> pumvisible() ? "<C-y>" : "<C-l>"
 inoremap <expr> <CR> pumvisible() ? "<C-y>" :"<CR>"
 
-
 " Cancel the complete menu item like CTRL+e would.
 inoremap <expr> <down> pumvisible() ? "<C-e>" : "<down>
+
+" Prevent x from overriding what's in the clipboard.
+noremap x "_x
+noremap X "_x
+
 
 " -----------------------------------------------------------------------------
 " Basic autocommands
@@ -281,7 +284,31 @@ endif
 " ycm-core/YouCompleteMe
 " .............................................................................
 
+" Default compelation flags if none are found
 let g:ycm_global_ycm_extra_conf = '~/.vim/plugged/YouCompleteMe/.ycm_extra_conf.py'
+
+fun! GoYCM()
+  nnoremap <buffer> <silent> <leader>gd :YcmCompleter GoTo<CR>
+  nnoremap <buffer> <silent> <leader>gr :YcmCompleter GoToReferences<CR>
+  nnoremap <buffer> <silent> <leader>rr :YcmCompleter RefactorRename<space>
+endfun
+
+autocmd FileType cpp,cxx,h,hpp,c :call GoYCM()
+
+" Add sematic triggers
+" let g:ycm_semantic_triggers =  {
+"   \   'c': ['->', '.'],
+"   \   'objc': ['->', '.', 're!\[[_a-zA-Z]+\w*\s', 're!^\s*[^\W\d]\w*\s',
+"   \            're!\[.*\]\s'],
+"   \   'ocaml': ['.', '#'],
+"   \   'cpp,cuda,objcpp': ['->', '.', '::'],
+"   \   'perl': ['->'],
+"   \   'php': ['->', '::'],
+"   \   'cs,d,elixir,go,groovy,java,javascript,julia,perl6,python,scala,typescript,vb': ['.'],
+"   \   'ruby,rust': ['.', '::'],
+"   \   'lua': ['.', ':'],
+"   \   'erlang': [':'],
+"   \ }
 " .............................................................................
 " luochen1990/rainbow
 " .............................................................................
