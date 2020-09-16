@@ -32,9 +32,9 @@ call plug#begin('~/.vim/plugged')
 
 " Colors and themes
 Plug 'chuling/equinusocio-material.vim'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'edkolev/tmuxline.vim'
+" Plug 'vim-airline/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
+" Plug 'edkolev/tmuxline.vim'
 
 " Integrate fzf with Vim.
 Plug '~/.fzf'
@@ -96,19 +96,19 @@ colorscheme equinusocio_material
 " -----------------------------------------------------------------------------
 
 " Heavily inspired by: https://github.com/junegunn/dotfiles/blob/master/vimrc
-" function! s:statusline_expr()
-"   let mod = "%{&modified ? '[+] ' : !&modifiable ? '[x] ' : ''}"
-"   let ro  = "%{&readonly ? '[RO] ' : ''}"
-"   let ft  = "%{len(&filetype) ? '['.&filetype.'] ' : ''}"
-"   let fug = "%{exists('g:loaded_fugitive') ? fugitive#statusline() : ''}"
-"   let sep = ' %= '
-"   let pos = ' %-12(%l : %c%V%) '
-"   let pct = ' %P'
+function! s:statusline_expr()
+  let mod = "%{&modified ? '[+] ' : !&modifiable ? '[x] ' : ''}"
+  let ro  = "%{&readonly ? '[RO] ' : ''}"
+  let ft  = "%{len(&filetype) ? '['.&filetype.'] ' : ''}"
+  let fug = "%{exists('g:loaded_fugitive') ? fugitive#statusline() : ''}"
+  let sep = ' %= '
+  let pos = ' %-12(%l : %c%V%) '
+  let pct = ' %P'
 
-"   return '[%n] %f %<'.mod.ro.ft.fug.sep.pos.'%*'.pct
-" endfunction
+  return '[%n] %f %<'.mod.ro.ft.fug.sep.pos.'%*'.pct
+endfunction
 
-" let &statusline = s:statusline_expr()
+let &statusline = s:statusline_expr()
 
 " -----------------------------------------------------------------------------
 " Basic settings
@@ -171,6 +171,7 @@ set virtualedit=block
 set wildmenu
 set wildmode=full
 set wrap
+set formatoptions-=cro
 
 " -----------------------------------------------------------------------------
 " Basic mappings
@@ -218,6 +219,76 @@ inoremap <expr> <down> pumvisible() ? "<C-e>" : "<down>
 " Prevent x from overriding what's in the clipboard.
 noremap x "_x
 noremap X "_x
+
+" .............................................................................
+" Autoclose mappings
+" Inspired by : 
+" https://medium.com/vim-drops/custom-autoclose-mappings-1ff90f45c6f5
+" .............................................................................
+
+"autoclose and position cursor to write text inside
+inoremap ' ''<left> inoremap ` ``<left>
+inoremap " ""<left>
+inoremap ( ()<left>
+inoremap [ []<left>
+inoremap { {}<left>
+"autoclose with ; and position cursor to write text inside
+inoremap '; '';<left><left>
+inoremap `; ``;<left><left>
+inoremap "; "";<left><left>
+inoremap (; ();<left><left>
+inoremap [; [];<left><left>
+inoremap {; {};<left><left>
+"autoclose with , and position cursor to write text inside
+inoremap ', '',<left><left>
+inoremap `, ``,<left><left>
+inoremap ", "",<left><left>
+inoremap (, (),<left><left>
+inoremap [, [],<left><left>
+inoremap {, {},<left><left>
+"autoclose and position cursor after
+inoremap '<space> ''
+inoremap `<space> ``
+inoremap "<space> ""
+inoremap (<space> ()
+inoremap [<space> []
+inoremap {<space> {}
+"autoclose with ; and position cursor after
+inoremap ';<space> '';
+inoremap `;<space> ``;
+inoremap ";<space> "";
+inoremap (;<space> ();
+inoremap [;<space> [];
+inoremap {;<space> {};
+"autoclose with , and position cursor after
+inoremap ',<space> '',
+inoremap `,<space> ``,
+inoremap ",<space> "",
+inoremap (,<space> (),
+inoremap [,<space> [],
+inoremap {,<space> {},
+"autoclose 2 lines below and position cursor in the middle 
+inoremap '<CR> '<CR>'<ESC>O
+inoremap `<CR> `<CR>`<ESC>O
+inoremap "<CR> "<CR>"<ESC>O
+inoremap (<CR> (<CR>)<ESC>O
+inoremap [<CR> [<CR>]<ESC>O
+inoremap {<CR> {<CR>}<ESC>O
+"autoclose 2 lines below adding ; and position cursor in the middle 
+inoremap ';<CR> '<CR>';<ESC>O
+inoremap `;<CR> `<CR>`;<ESC>O
+inoremap ";<CR> "<CR>";<ESC>O
+inoremap (;<CR> (<CR>);<ESC>O
+inoremap [;<CR> [<CR>];<ESC>O
+inoremap {;<CR> {<CR>};<ESC>O
+"autoclose 2 lines below adding , and position cursor in the middle 
+inoremap ',<CR> '<CR>',<ESC>O
+inoremap `,<CR> `<CR>`,<ESC>O
+inoremap ",<CR> "<CR>",<ESC>O
+inoremap (,<CR> (<CR>),<ESC>O
+inoremap [,<CR> [<CR>],<ESC>O
+inoremap {,<CR> {<CR>},<ESC>O
+
 
 
 " -----------------------------------------------------------------------------
@@ -295,20 +366,6 @@ endfun
 
 autocmd FileType cpp,cxx,h,hpp,c :call GoYCM()
 
-" Add sematic triggers
-" let g:ycm_semantic_triggers =  {
-"   \   'c': ['->', '.'],
-"   \   'objc': ['->', '.', 're!\[[_a-zA-Z]+\w*\s', 're!^\s*[^\W\d]\w*\s',
-"   \            're!\[.*\]\s'],
-"   \   'ocaml': ['.', '#'],
-"   \   'cpp,cuda,objcpp': ['->', '.', '::'],
-"   \   'perl': ['->'],
-"   \   'php': ['->', '::'],
-"   \   'cs,d,elixir,go,groovy,java,javascript,julia,perl6,python,scala,typescript,vb': ['.'],
-"   \   'ruby,rust': ['.', '::'],
-"   \   'lua': ['.', ':'],
-"   \   'erlang': [':'],
-"   \ }
 " .............................................................................
 " luochen1990/rainbow
 " .............................................................................
